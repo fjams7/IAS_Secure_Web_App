@@ -9,7 +9,7 @@ function shell(title, bodyInner, navExtra = '') {
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>${title} — UserMgmt</title>
   <link rel="stylesheet" href="/styles.css"/>
-  <!-- TODO: Add togglePassword.js (Checkpoint 2) -->
+  <script src="/togglePassword.js"></script>
 </head>
 <body>
   <nav>

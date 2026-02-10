@@ -22,8 +22,13 @@ function renderRegister() {
 
           <div class="form-group">
             <label>Password</label>
-            <input type="password" id="password" placeholder="••••••••" oninput="clearAlert()"/>
-            <!-- TODO: Add password strength meter (Checkpoint 2) -->
+            <div style="position:relative;">
+              <input type="password" id="password" placeholder="••••••••" oninput="checkStrength()"/>
+            </div>
+            <div class="strength-bar-track">
+              <div class="strength-bar-fill" id="barFill"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel">Enter a password</div>
           </div>
 
           <button class="btn btn-primary btn-block mt-1" onclick="register()">Create Account</button>
@@ -33,6 +38,35 @@ function renderRegister() {
     </div>
 
     <script>
+      /* ── Live password strength meter ─────────────────────── */
+      function checkStrength() {
+        const p     = document.getElementById('password').value;
+        const fill  = document.getElementById('barFill');
+        const label = document.getElementById('strengthLabel');
+
+        let score = 0;
+        if (p.length >= 8)                          score++;
+        if (p.length >= 12)                         score++;
+        if (/[A-Z]/.test(p) && /[a-z]/.test(p))    score++;
+        if (/[0-9]/.test(p))                        score++;
+        if (/[^A-Za-z0-9]/.test(p))                 score++;
+
+        const map = [
+          { w: '0%',   c: 'var(--border)',  t: 'Enter a password', tc: 'var(--text-dim)' },
+          { w: '20%',  c: 'var(--danger)',  t: 'Very weak',        tc: 'var(--danger)'  },
+          { w: '40%',  c: 'var(--danger)',  t: 'Weak',             tc: 'var(--danger)'  },
+          { w: '60%',  c: 'var(--warn)',    t: 'Okay',             tc: 'var(--warn)'    },
+          { w: '80%',  c: 'var(--accent)',  t: 'Strong',           tc: 'var(--accent)'  },
+          { w: '100%', c: 'var(--success)', t: 'Very strong',      tc: 'var(--success)' }
+        ];
+
+        const s = p.length === 0 ? 0 : Math.min(score, 5);
+        fill.style.width      = map[s].w;
+        fill.style.background = map[s].c;
+        label.style.color     = map[s].tc;
+        label.textContent     = map[s].t;
+      }
+
       /* ── Helpers ──────────────────────────────────────────── */
       function clearAlert() {
         ['err', 'ok'].forEach(id => {
@@ -69,6 +103,8 @@ function renderRegister() {
       }
 
       document.addEventListener('keydown', e => { if (e.key === 'Enter') register(); });
+
+      document.addEventListener('DOMContentLoaded', () => initToggle('password'));
     </script>
   `, authNav());
 }

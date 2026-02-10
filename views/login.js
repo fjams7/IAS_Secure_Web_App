@@ -16,7 +16,9 @@ function renderLogin() {
 
           <div class="form-group">
             <label>Password</label>
-            <input type="password" id="password" placeholder="••••••••"/>
+            <div style="position:relative;">
+              <input type="password" id="password" placeholder="••••••••"/>
+            </div>
           </div>
 
           <button class="btn btn-primary btn-block mt-1" onclick="login()">Sign In</button>
@@ -56,6 +58,8 @@ function renderLogin() {
       }
 
       document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+      document.addEventListener('DOMContentLoaded', () => initToggle('password'));
     </script>
   `, authNav());
 }

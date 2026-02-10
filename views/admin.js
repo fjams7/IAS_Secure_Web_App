@@ -73,7 +73,9 @@ function renderAdmin(users) {
         </div>
         <div class="form-group">
           <label>New Password <span style="color:var(--text-dim)">(leave blank to keep)</span></label>
-          <input type="password" id="editPassword" placeholder="••••••••"/>
+          <div style="position:relative;">
+            <input type="password" id="editPassword" placeholder="••••••••"/>
+          </div>
         </div>
 
         <div class="flex-gap mt-2">
@@ -99,6 +101,8 @@ function renderAdmin(users) {
         modalErr.classList.remove('show');
 
         document.getElementById('editModal').classList.add('show');
+
+        initToggle('editPassword');
       }
 
       function closeModal() {
