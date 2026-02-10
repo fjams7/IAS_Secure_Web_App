@@ -1,4 +1,3 @@
-// SQLite
 const initSqlJs = require('sql.js');
 const path       = require('path');
 const fs         = require('fs');
@@ -49,6 +48,9 @@ async function initDB() {
   const needsAdminSeed = !(adminRow.length && adminRow[0].values.length);
 
   // ── Query helpers ────────────────────────────────────────────────
+  // sql.js does NOT support db.exec(sql, params) or db.run(sql, params[]).
+  // All parameterised queries must use prepare / bind / step / free.
+
   function getOne(sql, params = []) {
     const stmt = db.prepare(sql);
     stmt.bind(params);
@@ -76,7 +78,7 @@ async function initDB() {
     save();
   }
 
-  // ── Queries object ─────────────────────────────────────────────
+  // ── Queries object (same .get/.all/.run shape routes.js expects) ─
   queries = {
     insertUser: {
       run: (username, email, password, role) =>
